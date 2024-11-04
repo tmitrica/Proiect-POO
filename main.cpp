@@ -205,7 +205,7 @@ public:
     Board(const Board &other) {
         this->properties = new Property[36];
         copy_n(other.properties,other.properties+36,this->properties);
-    }///constructor de copiere; vom declara o noua zona de memorie pentru a evita conflictele
+    }///constructor de copiere; vom declara o noua zona de memorie pentru a evita conflictele de memorie
 
     [[nodiscard]] const Property& getProperty(const int position) const {
         return properties[position];
