@@ -1,9 +1,9 @@
-using namespace std;
 #include<fstream>
 #include<iostream>
 #include<cstdlib>
 #include<ctime>
 #include<cassert>
+using namespace std;
 
 /*
     acest cod simuleaza un joc simplificat de monopoly; voi face cateva precizari referitoare la ordinea casutelor de pe tabla si efectul acestora
@@ -36,7 +36,7 @@ public:
         this->name = name;
         this->money = money;
         this->position = position;
-        this->jail = 0;
+        this->jail = jail;
     }///constructor parametrizat; jucatorii vor incepe by default cu 1500$ si la pozitia 0(START) dar putem schimba asta daca dorim
 
     Player(const Player &other) {
@@ -94,7 +94,7 @@ public:
         return position;
     }
 
-    [[nodiscard]] string getName() const {
+    [[nodiscard]] const string& getName() const {
         return name;
     }
 
@@ -116,6 +116,7 @@ public:
             name = other.name;
             money = other.money;
             position = other.position;
+            jail = other.jail;
         }
         return *this;
     }///operator= de copiere
@@ -168,7 +169,7 @@ public:
                << " owner: " << obj.owner;
     }///operator <<
 
-    [[nodiscard]] string getName() const {
+    [[nodiscard]] const string& getName() const {
         return name;
     }///geter pentru nume ca sa stim pe ce proprietate a aterizat un jucator
 
@@ -318,8 +319,11 @@ void testOwnership() {
     Player player("Teodor", 1500);
     Property property("Rahova", 500, 50);
 
-    assert(property.buy(&player) == 1);///poate fi cumparata
-    assert(property.buy(&player) == 0);///nu mai poate fi cumparata(este deja detinuta)
+    const int result1 = property.buy(&player);
+    assert(result1 == 1);///poate fi cumparata
+
+    const int result2 = property.buy(&player);
+    assert(result2 == 0);///nu mai poate fi cumparata(este deja detinuta)
 
     cout << "ownership passed\n";
 }///testam detinerea proprietatilor
