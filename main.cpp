@@ -32,16 +32,18 @@ class Player {
     int money, position, jail = 0;
 
 public:
-    explicit Player(const string &name = "", const int money = 1500,const int position = 0){
+    explicit Player(const string &name = "", const int money = 1500,const int position = 0, const int jail = 0){
         this->name = name;
         this->money = money;
         this->position = position;
+        this->jail = 0;
     }///constructor parametrizat; jucatorii vor incepe by default cu 1500$ si la pozitia 0(START) dar putem schimba asta daca dorim
 
     Player(const Player &other) {
         this->name = other.name;
         this->money = other.money;
         this->position = other.position;
+        this->jail = other.jail;
     }/// constructor copiere
 
     void move(const int pos) {
@@ -53,7 +55,7 @@ public:
         position = (position + pos) % 36;
     }/// pentru mutat pe tabla(tinand cont de start)
 
-    int move_train(const int pos) {
+    int move_train() {
         if(position == 4) position = 12;
         else if(position == 12) position = 24;
         else if(position == 24) position = 32;
@@ -88,15 +90,15 @@ public:
         else return 0;
     }///functie pentru verificat balanta in cazul unei proprietati libere
 
-    int getPosition() const {
+    [[nodiscard]] int getPosition() const {
         return position;
     }
 
-    string getName() const {
+    [[nodiscard]] string getName() const {
         return name;
     }
 
-    int getJail() const {
+    [[nodiscard]] int getJail() const {
         return jail;
     }
     ///getters pentru nume pozitie si variabila care ne arata daca jucatorul curent este in inchisoare sau nu
@@ -106,6 +108,7 @@ public:
                << "name: " << obj.name
                << " money: " << obj.money
                << " position: " << obj.position;
+
     }///operator <<
 
     Player& operator=(const Player &other) {
@@ -165,7 +168,7 @@ public:
                << " owner: " << obj.owner;
     }///operator <<
 
-    string getName() const {
+    [[nodiscard]] string getName() const {
         return name;
     }///geter pentru nume ca sa stim pe ce proprietate a aterizat un jucator
 
@@ -197,7 +200,7 @@ public:
         file.close();
         }
 
-    const Property& getProperty(const int position) const {
+    [[nodiscard]] const Property& getProperty(const int position) const {
         return properties[position];
     }///aflam proprietatea curenta pe care a aterizat un jucator
 
@@ -260,7 +263,7 @@ public:
                 cout <<player.getName()<<" at position "<<player.getPosition()<<" landed on a chance\n";
             else if(landed == 5)
                 cout <<player.getName()<<" at position "<<player.getPosition()<<" landed on a train station and got moved to "
-                <<player.move_train(player.getPosition())<<'\n';
+                <<player.move_train()<<'\n';
             else if(landed == 2)
                 cout <<player.getName()<<" at position "<<player.getPosition()<<" landed on a neutral space\n";
             else if(landed == 6) {
@@ -299,9 +302,14 @@ void testPlayer() {
     assert(player.getPosition() == 9);/// va trece de 36 de casute ale tablei deci 45 % 36 = 9
     cout << "movement passed\n";
 
-    assert(player.buy(500) == 1);///vor fi fonduri suficiente
-    assert(player.buy(1200) == 1);/// vor fi fonduri suficiente cu cei 200$ de la start
-    assert(player.buy(100) == 0);/// fonduri insuficiente
+    const int result1 = player.buy(500);
+    assert(result1 == 1);///vor fi fonduri suficiente
+
+    const int result2 = player.buy(1200);
+    assert(result2 == 1);/// vor fi fonduri suficiente cu cei 200$ de la start
+
+    const int result3 = player.buy(100);
+    assert(result3 == 0);/// fonduri insuficiente
 
     cout << "buying passed\n";
 }/// testam functiile de mutare pe harta, de colectare 200$ de la start si de cumparare a proprietatilor
@@ -332,15 +340,15 @@ void testJail() {
 
 void testTrain() {
     Player player("Teodor", 1500, 4);///incepem de la o gara
-    player.move_train(player.getPosition());
+    player.move_train();
 
     assert(player.getPosition() == 12);
-    player.move_train(player.getPosition());
+    player.move_train();
     assert(player.getPosition() == 24);///urmatoarele gari
-    player.move_train(player.getPosition());
+    player.move_train();
     assert(player.getPosition() == 32);
 
-    player.move_train(player.getPosition());
+    player.move_train();
     assert(player.getPosition() == 4);///verificam ca jucatorul poate trece prin toate garile si la ultima va primi 200$ pentru ca trece peste start
     cout << "train stations passed\n";
 }
