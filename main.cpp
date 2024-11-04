@@ -201,6 +201,10 @@ public:
         file.close();
         }
 
+    Board(const Board &other) {
+        this->properties = other.properties;///constructor copiere
+    }
+
     [[nodiscard]] const Property& getProperty(const int position) const {
         return properties[position];
     }///aflam proprietatea curenta pe care a aterizat un jucator
@@ -211,6 +215,13 @@ public:
     friend std::ostream & operator<<(std::ostream &os, const Board &obj) {
         return os << "properties: " << obj.properties;
     }///operator<<
+
+    Board &operator=(const Board &other) {
+        if (this == &other)
+            return *this;
+        properties = other.properties;
+        return *this;
+    }///operator= copiere
 
     ~Board() {
         delete[] properties;///destructor
@@ -242,7 +253,10 @@ public:
         file.close();
     }///constructor pentru initializarea tablei dar si citirea jucatorilor din fisier si respectiv numarul acestor
 
-
+    Game(const Game &other): board(other.board) {
+        this->players = other.players;
+        this->players_number = other.players_number;
+    }
 
     void Turn(const int currentPlayer) const {
         Player &player = players[currentPlayer];
@@ -287,6 +301,15 @@ public:
                << " players_number: " << obj.players_number
                << " board: " << obj.board;
     }///operator<<
+
+    Game & operator=(const Game &other) {
+        if (this == &other)
+            return *this;
+        players = other.players;
+        players_number = other.players_number;
+        board = other.board;
+        return *this;
+    }
 
     ~Game() {
         delete[] players;
