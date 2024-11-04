@@ -258,7 +258,7 @@ public:
         this->players = new Player[other.players_number];
         copy(other.players,other.players+other.players_number,this->players);
         this->players_number = other.players_number;
-    }///constructor copiere;pentru players vom aloca o noua zona de memorie la fel ca la board
+    }///constructor copiere; pentru players vom aloca o noua zona de memorie la fel ca la board
 
     void Turn(const int currentPlayer) const {
         Player &player = players[currentPlayer];
