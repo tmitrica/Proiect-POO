@@ -1,4 +1,3 @@
-#include <algorithm>
 #include<fstream>
 #include<iostream>
 #include<cstdlib>
@@ -204,7 +203,7 @@ public:
 
     Board(const Board &other) {
         this->properties = new Property[36];
-        copy_n(other.properties,other.properties+36,this->properties);
+        copy(other.properties,other.properties+36,this->properties);
     }///constructor de copiere; vom declara o noua zona de memorie pentru a evita conflictele de memorie
 
     [[nodiscard]] const Property& getProperty(const int position) const {
@@ -257,7 +256,7 @@ public:
 
     Game(const Game &other): board(other.board) {
         this->players = new Player[other.players_number];
-        copy_n(other.players,other.players+other.players_number,this->players);
+        copy(other.players,other.players+other.players_number,this->players);
         this->players_number = other.players_number;
     }///constructor copiere;pentru players vom aloca o noua zona de memorie la fel ca la board
 
