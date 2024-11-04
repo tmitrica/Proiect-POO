@@ -353,6 +353,7 @@ int main() {
     testJail();
     testTrain();
 
+
     ///testam jocul in sine pentru functionalitatea functiei Turn si initializarea tablei
     const Game game("players.txt", "board.txt");///generam jocul cu ajutorul fisierelor
     cout<<'\n';
