@@ -51,11 +51,11 @@ add_executable(${PROJECT_NAME}
 )
 
 include(cmake/CompilerFlags.cmake)
-
 ###############################################################################
 
 # use SYSTEM so cppcheck and clang-tidy do not report warnings from these directories
-target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE generated/include)
+#target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE generated/include)
+include_directories(${PROJECT_NAME} generated/include)
 # target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ext/<SomeHppLib>/include)
 # target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${<SomeLib>_SOURCE_DIR}/include)
 # target_link_directories(${PROJECT_NAME} PRIVATE ${<SomeLib>_BINARY_DIR}/lib)

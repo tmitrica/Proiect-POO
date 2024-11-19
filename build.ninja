@@ -52,35 +52,35 @@ build cmake_object_order_depends_target_oop: phony || .
 build CMakeFiles/oop.dir/main.cpp.obj: CXX_COMPILER__oop_unscanned_Debug C$:/Users/Teodor/CLionProjects/Proiect-POO/main.cpp || cmake_object_order_depends_target_oop
   DEP_FILE = CMakeFiles\oop.dir\main.cpp.obj.d
   FLAGS = -g -std=c++23 -fdiagnostics-color=always -Wall -Wextra -pedantic
-  INCLUDES = -isystem C:/Users/Teodor/CLionProjects/Proiect-POO/generated/include
+  INCLUDES = -IC:/Users/Teodor/CLionProjects/Proiect-POO/oop -IC:/Users/Teodor/CLionProjects/Proiect-POO/generated/include
   OBJECT_DIR = CMakeFiles\oop.dir
   OBJECT_FILE_DIR = CMakeFiles\oop.dir
 
 build CMakeFiles/oop.dir/generated/src/Player.cpp.obj: CXX_COMPILER__oop_unscanned_Debug C$:/Users/Teodor/CLionProjects/Proiect-POO/generated/src/Player.cpp || cmake_object_order_depends_target_oop
   DEP_FILE = CMakeFiles\oop.dir\generated\src\Player.cpp.obj.d
   FLAGS = -g -std=c++23 -fdiagnostics-color=always -Wall -Wextra -pedantic
-  INCLUDES = -isystem C:/Users/Teodor/CLionProjects/Proiect-POO/generated/include
+  INCLUDES = -IC:/Users/Teodor/CLionProjects/Proiect-POO/oop -IC:/Users/Teodor/CLionProjects/Proiect-POO/generated/include
   OBJECT_DIR = CMakeFiles\oop.dir
   OBJECT_FILE_DIR = CMakeFiles\oop.dir\generated\src
 
 build CMakeFiles/oop.dir/generated/src/Property.cpp.obj: CXX_COMPILER__oop_unscanned_Debug C$:/Users/Teodor/CLionProjects/Proiect-POO/generated/src/Property.cpp || cmake_object_order_depends_target_oop
   DEP_FILE = CMakeFiles\oop.dir\generated\src\Property.cpp.obj.d
   FLAGS = -g -std=c++23 -fdiagnostics-color=always -Wall -Wextra -pedantic
-  INCLUDES = -isystem C:/Users/Teodor/CLionProjects/Proiect-POO/generated/include
+  INCLUDES = -IC:/Users/Teodor/CLionProjects/Proiect-POO/oop -IC:/Users/Teodor/CLionProjects/Proiect-POO/generated/include
   OBJECT_DIR = CMakeFiles\oop.dir
   OBJECT_FILE_DIR = CMakeFiles\oop.dir\generated\src
 
 build CMakeFiles/oop.dir/generated/src/Board.cpp.obj: CXX_COMPILER__oop_unscanned_Debug C$:/Users/Teodor/CLionProjects/Proiect-POO/generated/src/Board.cpp || cmake_object_order_depends_target_oop
   DEP_FILE = CMakeFiles\oop.dir\generated\src\Board.cpp.obj.d
   FLAGS = -g -std=c++23 -fdiagnostics-color=always -Wall -Wextra -pedantic
-  INCLUDES = -isystem C:/Users/Teodor/CLionProjects/Proiect-POO/generated/include
+  INCLUDES = -IC:/Users/Teodor/CLionProjects/Proiect-POO/oop -IC:/Users/Teodor/CLionProjects/Proiect-POO/generated/include
   OBJECT_DIR = CMakeFiles\oop.dir
   OBJECT_FILE_DIR = CMakeFiles\oop.dir\generated\src
 
 build CMakeFiles/oop.dir/generated/src/Game.cpp.obj: CXX_COMPILER__oop_unscanned_Debug C$:/Users/Teodor/CLionProjects/Proiect-POO/generated/src/Game.cpp || cmake_object_order_depends_target_oop
   DEP_FILE = CMakeFiles\oop.dir\generated\src\Game.cpp.obj.d
   FLAGS = -g -std=c++23 -fdiagnostics-color=always -Wall -Wextra -pedantic
-  INCLUDES = -isystem C:/Users/Teodor/CLionProjects/Proiect-POO/generated/include
+  INCLUDES = -IC:/Users/Teodor/CLionProjects/Proiect-POO/oop -IC:/Users/Teodor/CLionProjects/Proiect-POO/generated/include
   OBJECT_DIR = CMakeFiles\oop.dir
   OBJECT_FILE_DIR = CMakeFiles\oop.dir\generated\src
 

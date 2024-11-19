@@ -1,11 +1,16 @@
 # ninja log v6
 10	183	7532281053972296	CMakeFiles/oop.dir/generated/src/Helper.cpp.obj	7f50d33f4d969511
-6	706	7537081330612931	CMakeFiles/oop.dir/main.cpp.obj	eba5e309b99ad4
+23	599	7537092240328096	CMakeFiles/oop.dir/main.cpp.obj	eba5e309b99ad4
 23	724	7537081330772595	CMakeFiles/oop.dir/generated/src/Board.cpp.obj	857fecd6d93c8b76
-725	916	7537081337793335	oop.exe	b6a0ef8732dcc781
+600	775	7537092246089859	oop.exe	75095034d8bcd572
 13	638	7537081330681401	CMakeFiles/oop.dir/generated/src/Player.cpp.obj	ce7ca729ab713cc9
-2	238	7537081745332270	build.ninja	675262c661ed4407
+2	378	7537224997520529	build.ninja	675262c661ed4407
 18	634	7537081330731544	CMakeFiles/oop.dir/generated/src/Property.cpp.obj	211ee0dc146b05ee
 28	725	7537081330821771	CMakeFiles/oop.dir/generated/src/Game.cpp.obj	a1402902cad5ec10
-2	433	7537081745332270	build.ninja	675262c661ed4407
-33	199	7537081747030350	oop.exe	75095034d8bcd572
+3	358	7537224997520529	build.ninja	675262c661ed4407
+32	810	7537224998818919	CMakeFiles/oop.dir/generated/src/Property.cpp.obj	a4de48d01c5be0a
+35	816	7537224998849573	CMakeFiles/oop.dir/generated/src/Board.cpp.obj	5104e56dac6a1e08
+38	817	7537224998880459	CMakeFiles/oop.dir/generated/src/Game.cpp.obj	980edb692fb650d6
+28	822	7537224998780351	CMakeFiles/oop.dir/generated/src/Player.cpp.obj	daeb5671912380
+24	823	7537224998748746	CMakeFiles/oop.dir/main.cpp.obj	ccd2b443c0595e32
+823	1206	7537225006738250	oop.exe	75095034d8bcd572
