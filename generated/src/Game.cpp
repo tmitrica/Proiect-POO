@@ -19,7 +19,7 @@ Game::Game(const std::string &f, const std::string &g): board(g) {
 } /// constructor to initialize the board and read players from the file, as well as their count
 
 
-int Game::Turn(int currentPlayer, const int turn) {
+int Game::Turn(const int currentPlayer, const int turn) {
     std::cout << "Turn: " << turn << '\n';
 
     ///checking if currentPlayer is active

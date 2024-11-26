@@ -25,11 +25,11 @@ public:
 
     const std::string &getName() const;
 
-    void ReceiveRent(int money);
+    void ReceiveRent(int local_money);
 
-    void PayRent(int money);
+    void PayRent(int local_money);
 
-    void setIn_Game(int in_game);
+    void setIn_Game(int local_in_game);
 
     int getIn_Game() const;
 

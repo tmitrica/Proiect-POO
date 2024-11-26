@@ -23,11 +23,11 @@ public:
 
     int getRent() const;
 
-    void setOwned(int owned);
+    void setOwned(int local_owned);
 
     int getOwned() const;
 
-    void setOwner(Player *owner);
+    void setOwner(Player *local_owner);
 
     ~Property() = default; ///destructor
 };
