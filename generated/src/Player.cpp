@@ -69,22 +69,22 @@ int Player::getJail() const {
     return jail;
 }
 
-void Player::ReceiveRent(const int money) {
-    if (this->money + money > 3000)
+void Player::ReceiveRent(const int local_money) {
+    if (this->money + local_money > 3000)
         this->money = 3000;
-    else this->money += money;
+    else this->money += local_money;
 }
 
-void Player::PayRent(const int money) {
-    this->money = this->money - money;
+void Player::PayRent(const int local_money) {
+    this->money = this->money - local_money;
 }
 
 int Player::getIn_Game() const {
     return in_game;
 }
 
-void Player::setIn_Game(const int in_game) {
-    this->in_game = in_game;
+void Player::setIn_Game(const int local_in_game) {
+    this->in_game = local_in_game;
 }
 
 

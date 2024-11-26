@@ -40,16 +40,16 @@ Player *Property::getOwner() const {
     return owner;
 }
 
-void Property::setOwned(const int owned) {
-    this->owned = owned;
+void Property::setOwned(const int local_owned) {
+    this->owned = local_owned;
 }
 
 int Property::getOwned() const {
     return owned;
 }
 
-void Property::setOwner(Player *owner = nullptr) {
-    this->owner = owner;
+void Property::setOwner(Player *local_owner = nullptr) {
+    this->owner = local_owner;
 }
 
 int Property::getRent() const {
