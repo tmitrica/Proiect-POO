@@ -1,10 +1,11 @@
 #include "Player.h"
 
-Player::Player(const std::string &name, const int money, const int position, const int jail) {
+Player::Player(const std::string &name, const int money, const int position, const int jail, const int in_game) {
     this->name = name;
     this->money = money;
     this->position = position;
     this->jail = jail;
+    this->in_game = in_game;
 } /// parameterized constructor; players will start by default with $1500 and at position 0 (START), but we can change this if desired
 
 void Player::move(const int pos) {
@@ -76,6 +77,14 @@ void Player::ReceiveRent(const int money) {
 
 void Player::PayRent(const int money) {
     this->money = this->money - money;
+}
+
+int Player::getIn_Game() const {
+    return in_game;
+}
+
+void Player::setIn_Game(const int in_game) {
+    this->in_game = in_game;
 }
 
 

@@ -18,39 +18,39 @@ Game::Game(const std::string &f, const std::string &g): board(g) {
     file.close();
 } /// constructor to initialize the board and read players from the file, as well as their count
 
-void Game::PrintProperties() const {
-    for (int i = 0; i < 36; i++) {
-        const Property &property = board.getProperty(i);
-        if (property.getOwned() == 1)
-            std::cout << "Property " << i << ": "<< property.getOwner()->getName()<< '\n';
-    }
-}
-
-void Game::RemovePlayer(const int currentPlayer) {
-    auto *newPlayers = new Player[players_number - 1];
-
-    for (int i = 0, j = 0; i < players_number; i++) {
-        if (i != currentPlayer) {
-            newPlayers[j++] = players[i];
-        }
-    }
-    delete[] players;
-
-    players = newPlayers;
-    players_number--;
-    for (int i = 0; i < players_number; i++) {
-        std::cout << " " << players[i].getName() << " ";
-    }
-    std::cout << '\n';
-} ///function for removing a player after bankruptcy
 
 int Game::Turn(int currentPlayer, const int turn) {
     std::cout << "Turn: " << turn << '\n';
 
-    if (players_number == 1) {
-        std::cout << "Player " << players[0].getName() << " has won.\n";
-        return 0;
+    ///checking if currentPlayer is active
+    if (players[currentPlayer].getIn_Game() == 0) {
+
+        int nextPlayer = (currentPlayer + 1) % players_number;
+        while (players[nextPlayer].getIn_Game() == 0 && nextPlayer != currentPlayer) {
+            nextPlayer = (nextPlayer + 1) % players_number;
+        }
+
+        if (players[nextPlayer].getIn_Game() == 0) {
+            std::cout << "No active players left. The game has ended.\n";
+            return 0;
+        }
+        return Turn(nextPlayer, turn);///we continue the turn with the next active player
     }
+
+    int activePlayers = 0;
+    int lastActivePlayerIndex = -1;
+    for (int i = 0; i < players_number; i++) {
+        if (players[i].getIn_Game() == 1) {
+            activePlayers++;
+            lastActivePlayerIndex = i;
+        }
+    }
+
+
+    if (activePlayers == 1) {
+        std::cout << "Player " << players[lastActivePlayerIndex].getName() << " has won.\n";
+        return 0;
+    }///the game ends when there is only one active player
 
     if (turn == 250) {
         std::cout << "The game ended after 250 turns\n";
@@ -65,107 +65,89 @@ int Game::Turn(int currentPlayer, const int turn) {
         }
         std::cout << winner << " won by having the most amount of money " << max << '\n';
         return 0;
-    }
+    }///the game ends after 250 turns
 
-    for (int i = 0; i < players_number;) {
-        if (players[i].getMoney() <= 0) {
-            std::cout << players[i].getName() << " has lost\n";
+    for (int i = 0; i < players_number; ++i) {
+        if (players[i].getIn_Game() == 1) {
+            Player &player = players[i];
+            if (player.getJail() == 0) {
+                const int dice1 = rand() % 6 + 1;
+                const int dice2 = rand() % 6 + 1;
+                const int dice = dice1 + dice2;
+                player.move(dice);
 
-            for (int j = 0; j < 36; j++) {
-                auto &property = const_cast<Property &>(board.getProperty(j));
-                if (property.getOwned() == 1 && property.getOwner()->getName() == players[i].getName()) {
-                    ///checking for properties owned by currentPlayer
-                    property.setOwned(0); ///the property is not owned anymore
-                    property.setOwner(nullptr); ///resetting the owner pointer
-                }
-            }
-            PrintProperties();
-            RemovePlayer(i);
+                auto &property = const_cast<Property &>(board.getProperty(player.getPosition()));
+                int landed = property.buy(&player);
+                if (landed == 1)
+                    std::cout << player.getName() << " at position " << player.getPosition() << " bought property " <<
+                            property.getName() << '\n';
+                else if (landed == 3)
+                    std::cout << player.getName() << " at position " << player.getPosition() <<
+                            " landed on a community chest\n";
+                else if (landed == 4)
+                    std::cout << player.getName() << " at position " << player.getPosition() << " landed on a chance\n";
+                else if (landed == 8)
+                    std::cout << player.getName() << " at position " << player.getPosition() <<
+                            " landed on the paid parking\n";
+                else if (landed == 5)
+                    std::cout << player.getName() << " at position " << player.getPosition() <<
+                            " landed on a train station and got moved to " << player.move_train() << '\n';
+                else if (landed == 2)
+                    std::cout << player.getName() << " at position " << player.getPosition() <<
+                            " landed on a neutral space\n";
+                else if (landed == 6) {
+                    std::cout << player.getName() << " must go to jail for 3 rounds\n";
+                    player.move_jail();
+                } else if (landed == 7)
+                    std::cout << player.getName() << " at position " << player.getPosition() <<
+                            " insufficient funds for this property\n";
+                else {
+                    Player *owner = property.getOwner();
 
-            if (i < currentPlayer) {
-                currentPlayer = (currentPlayer - 1 + players_number) % players_number;
-            } else if (i == currentPlayer) {
-                currentPlayer = currentPlayer % players_number;
-            } ///adjusting i according to the position of currentPlayer
-        } else {
-            i++; /// increasing i if the player was not removed
-        }
-    }
+                    const int rent = property.getRent();
 
-    Player &player = players[currentPlayer];
-    if (player.getJail() == 0) {
-        const int dice1 = rand() % 6 + 1;
-        const int dice2 = rand() % 6 + 1;
-        const int dice = dice1 + dice2;
-        player.move(dice);
+                    if (owner == &player) {
+                        std::cout << player.getName() << " at position " << player.getPosition() <<
+                                " owns this property\n";
+                    } else if (player.getMoney() >= rent && player.getName() != owner->getName()) {
+                        std::cout << player.getName() << " at position " << player.getPosition() << " paid rent " <<
+                                rent << " to " << owner->getName() << '\n';
+                        owner->ReceiveRent(rent);
+                        player.PayRent(rent);
+                    } else if (player.getMoney() < rent && player.getName() != owner->getName()) {
+                        std::cout << player.getName() << " at position " << player.getPosition() << " can't pay rent "
+                                << rent << " to " << owner->getName() << '\n';
 
-        auto &property = const_cast<Property &>(board.getProperty(player.getPosition()));
+                        for (int j = 0; j < 36; j++) {
+                            auto &property1 = const_cast<Property &>(board.getProperty(j));
+                            if (property1.getOwned() == 1 && property1.getOwner()->getName() == players[i].getName()) {
+                                property1.setOwned(0);
+                                property1.setOwner(nullptr);
+                            }
+                        }
 
-        int landed = property.buy(&player);
-        if (landed == 1)
-            std::cout << player.getName() << " at position " << player.getPosition() << " bought property " << property.
-                    getName() << '\n';
-        else if (landed == 3)
-            std::cout << player.getName() << " at position " << player.getPosition() <<
-                    " landed on a community chest\n";
-        else if (landed == 4)
-            std::cout << player.getName() << " at position " << player.getPosition() << " landed on a chance\n";
-        else if (landed == 8)
-            std::cout << player.getName() << " at position " << player.getPosition() <<
-                    " landed on the paid parking\n";
-        else if (landed == 5)
-            std::cout << player.getName() << " at position " << player.getPosition() <<
-                    " landed on a train station and got moved to "
-                    << player.move_train() << '\n';
-        else if (landed == 2)
-            std::cout << player.getName() << " at position " << player.getPosition() << " landed on a neutral space\n";
-        else if (landed == 6) {
-            std::cout << player.getName() << " must go to jail for 3 rounds\n";
-            player.move_jail();
-        } else if (landed == 7)
-            std::cout << player.getName() << " at position " << player.getPosition() <<
-                    " insufficient funds for this property\n";
-        else {
-            Player *owner = property.getOwner();
-            if (owner != nullptr) {
-                std::cout << "DEBUG: Property owner = " << owner->getName() << '\n';
-            } else {
-                std::cout << "DEBUG: Property is unowned.\n";
-            }
-
-            const int rent = property.getRent();
-
-            if (owner == &player) {
-                std::cout << player.getName() << " at position " << player.getPosition() << " owns this property\n";
-            }else if (player.getMoney() >= rent && player.getName() != owner->getName()) {
-                std::cout << player.getName() << " at position " << player.getPosition() << " paid rent " << rent <<
-                        " to "
-                        << owner->getName() << '\n';
-                owner->ReceiveRent(rent);
-                player.PayRent(rent);
-            } else if (player.getMoney() < rent && player.getName() != owner->getName()) {
-                std::cout << player.getName() << " at position " << player.getPosition() << " can't pay rent " << rent
-                        << " to "
-                        << owner->getName() << '\n';
-
-                for (int j = 0; j < 36; j++) {
-                    auto &property1 = const_cast<Property &>(board.getProperty(j));
-                    if (property1.getOwned() == 1 && property1.getOwner()->getName() == players[currentPlayer].
-                        getName()) {
-                        ///checking for properties owned by currentPlayer
-                        property1.setOwned(0); ///the property is not owned anymore
-                        property1.setOwner(nullptr); ///resetting the owner pointer
+                        std::cout << players[i].getName() << " has lost\n";
+                        players[i].setIn_Game(0);
                     }
                 }
-                PrintProperties();
-                std::cout << players[currentPlayer].getName() << " has lost\n";
-                RemovePlayer(currentPlayer);
+            } else {
+                player.move_jail();
             }
-
         }
-    } else player.move_jail();
+    }
 
-    return Turn((currentPlayer + 1) % players_number, turn + 1);
+    ///checking for next active player
+    int nextPlayer = (currentPlayer + 1) % players_number;
+    while (players[nextPlayer].getIn_Game() == 0 && nextPlayer != currentPlayer) {
+        nextPlayer = (nextPlayer + 1) % players_number;
+    }
+
+    if (players[nextPlayer].getIn_Game() == 0) {
+        std::cout << "No active players left. The game has ended.\n";
+        return 0;
+    }
+
+    return Turn(nextPlayer, turn + 1);
 }
 
 /// this function simulates a player's turn in the game; first, we check if the current player is in jail
