@@ -14,12 +14,15 @@ Board::Board(const std::string &f) {
 
     for (int i = 0; i < 36; ++i) {
         file >> name >> price >> rent;
-        properties[i] = Property(name, price, rent);
+        if (price < 10)
+            properties[i] = Property(name, price, rent,2);
+        else
+            properties[i] = Property(name, price, rent);
     }
     file.close();
 }
 
-const Property &Board::getProperty(const int position) const {
+Property &Board::getProperty(const int position) const {
     return properties[position];
 } /// retrieves the current property on which a player has landed
 

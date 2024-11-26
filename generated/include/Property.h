@@ -8,16 +8,26 @@
 class Property {
     std::string name;
     int price, rent;
-    bool owned;
+    int owned;
     Player *owner;
 
 public:
-    explicit Property(const std::string &name = "", const int price = 0, const int rent = 0, const bool owned = false,
-                      Player *const owner = nullptr);
+    explicit Property(const std::string &name = "", int price = 0, int rent = 0, int owned = 0,
+                      Player *owner = nullptr);
 
     int buy(Player *player);
 
     const std::string &getName() const;
+
+    Player *getOwner() const;
+
+    int getRent() const;
+
+    void setOwned(int owned);
+
+    int getOwned() const;
+
+    void setOwner(Player *owner);
 
     ~Property() = default; ///destructor
 };

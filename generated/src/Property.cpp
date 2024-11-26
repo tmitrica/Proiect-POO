@@ -1,6 +1,6 @@
 #include "Property.h"
 
-Property::Property(const std::string &name, const int price, const int rent, const bool owned, Player *const owner) {
+Property::Property(const std::string &name, const int price, const int rent, const int owned, Player *const owner) {
     this->name = name;
     this->price = price;
     this->rent = rent;
@@ -16,17 +16,42 @@ int Property::buy(Player *player) {
     else if (price == 5)
         return 5; /// train station
     else if (price == 2)
-        return 2; /// parking; visiting jail; start
+        return 2; /// visiting jail; start
+    else if (price == 8)
+        return 8; /// paid_parking;
     else if (price == 6)
         return 6; /// go_to_jail
-    if (owned == false && player->buy(price)) {
-        owned = true;
+    if (owned == 0 && player->buy(price)) {
+        owned = 1;
         owner = player;
         return 1;
+    } else if (owned == 0) {
+        return 7;
     } else return 0;
 } /// function to check if the property the player landed on is a special space (start, train station, jail, etc.)
 /// if the property is unowned and the player has sufficient balance, it will be marked as owned by them
 
+
 const std::string &Property::getName() const {
     return name;
 } /// getter for the name, to identify the property on which a player landed
+
+Player *Property::getOwner() const {
+    return owner;
+}
+
+void Property::setOwned(const int owned) {
+    this->owned = owned;
+}
+
+int Property::getOwned() const {
+    return owned;
+}
+
+void Property::setOwner(Player *owner = nullptr) {
+    this->owner = owner;
+}
+
+int Property::getRent() const {
+    return rent;
+}

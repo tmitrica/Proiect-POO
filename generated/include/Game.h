@@ -7,16 +7,22 @@
 #include "Board.h"
 
 class Game {
+    protected:
     Player *players;
     int players_number = 0;
     Board board;
 
 public:
-    explicit Game(const std::string &f, const std::string &g);
 
-    void Turn(int currentPlayer) const;
+    Game(const std::string &f, const std::string &g);
 
-    friend std::ostream &operator<<(std::ostream &os, const Game &obj);
+    void PrintProperties() const;
+
+    void RemovePlayer(int currentPlayer);
+
+    int Turn(int currentPlayer, int turn);
+
+  //  virtual void ApplyEffect();
 
     ~Game();
 };

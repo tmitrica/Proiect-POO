@@ -16,7 +16,7 @@ Bd_Timisoara 180 90
 Cufar2 3 0
 Bd_Brasov 180 90
 Drumul_Taberei 200 100
-Parcare 2 0
+Parcare_platita 8 0
 Bd_Carol 220 110
 Bd_Kogalniceanu 220 110
 Sansa2 4 0

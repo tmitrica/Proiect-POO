@@ -10,7 +10,9 @@ Player::Player(const std::string &name, const int money, const int position, con
 void Player::move(const int pos) {
     if (position + pos >= 36) {
         std::cout << name << " collected 200$ by going over START\n";
-        money += 200;
+        if (money + 200 > 3000)
+            money = 3000;
+        else money += 200;
     }
 
     position = (position + pos) % 36;
@@ -22,7 +24,9 @@ int Player::move_train() {
     else if (position == 24) position = 32;
     else if (position == 32) {
         position = 4;
-        money += 200;
+        if (money + 200 > 3000)
+            money = 3000;
+        else money += 200;
         std::cout << "(collected 200$ from START)\n";
     }
     return position;
@@ -52,6 +56,10 @@ int Player::getPosition() const {
     return position;
 }
 
+int Player::getMoney() const {
+    return money;
+}
+
 const std::string &Player::getName() const {
     return name;
 }
@@ -59,6 +67,17 @@ const std::string &Player::getName() const {
 int Player::getJail() const {
     return jail;
 }
+
+void Player::ReceiveRent(const int money) {
+    if (this->money + money > 3000)
+        this->money = 3000;
+    else this->money += money;
+}
+
+void Player::PayRent(const int money) {
+    this->money = this->money - money;
+}
+
 
 /// getters for name, position, and the variable indicating if the current player is in jail or not
 

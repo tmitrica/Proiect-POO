@@ -9,19 +9,25 @@ class Player {
     int money, position, jail = 0;
 
 public:
-    explicit Player(const std::string &name = "", const int money = 1500, const int position = 0, const int jail = 0);
+    explicit Player(const std::string &name = "", int money = 750, int position = 0, int jail = 0);
 
-    void move(const int pos);
+    void move(int pos);
 
     int move_train();
 
     void move_jail();
 
-    int buy(const int price);
+    int buy(int price);
 
     int getPosition() const;
 
+    int getMoney() const;
+
     const std::string &getName() const;
+
+    void ReceiveRent(int money);
+
+    void PayRent(int money);
 
     int getJail() const;
 

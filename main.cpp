@@ -14,10 +14,12 @@ Station will move the player to the next station; these are always located at po
 Chance and Community Chest have not been implemented yet and can be considered neutral tiles (they have no effect on the player).
 Parking and Jail (visiting) are neutral tiles.
 go_to_jail will send the player to jail, which is always located at position 9; the player will wait 3 turns here before being able to play again.
-The game will run for a set number of turns since the end condition (when only one player with money remains) and the concept of rent payment and, implicitly, bankruptcy have not been implemented.
 
 The properties will be read from the file board.txt in the format: name price (integer >10) rent (integer).
 The number of players and their details will be read from the file players.txt.
+
+A player wins when he/she is the only one left with money or the game will end automatically after 250 turns and the winner is the player with the most amount of money
+If more than one player have the same amount of winning money(at the end) the winner will be the first one read from the file.
  */
 
 void testPlayer() {
@@ -87,18 +89,15 @@ void testTrain() {
 int main() {
     srand(static_cast<unsigned int>(time(nullptr))); /// initialize seed for random
 
-    testPlayer();
-    testOwnership();
-    testJail();
-    testTrain();
+    // testPlayer();
+    //testOwnership();
+    //testJail();
+    //testTrain();
 
     /// test the game itself for the functionality of the Turn function and board initialization
-    const Game game("players.txt", "board.txt"); /// generate the game using the files
+    Game game("players.txt", "board.txt"); /// generate the game using the files
     std::cout << '\n';
-
-    for (int i = 0; i < 15; ++i) {
-        game.Turn(i % 3);/// simulate 15 game turns for 3 players
-    }
+    game.Turn(0, 1);
 
     return 0;
 }
