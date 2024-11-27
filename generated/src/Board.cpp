@@ -33,5 +33,7 @@ Property &Board::getProperty(const int position) const {
 } /// retrieves the current property on which a player has landed
 
 Board::~Board() {
-    delete[] properties; /// destructor
+    for (int i = 0; i < 36; ++i)
+        delete properties[i];
+    delete properties;
 }
