@@ -8,6 +8,10 @@ public:
     Chance(const std::string& name, int price, int rent);
 
     void ApplyEffect(Player *player) const override;
+
+    void Display() const override;
+
+    Property *clone() const override;
 };
 
 

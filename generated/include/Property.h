@@ -20,6 +20,17 @@ public:
 
     virtual void ApplyEffect(Player *player) const;
 
+    virtual void Display() const;
+
+    virtual Property* clone() const;
+
+    void Info() const {
+        std::cout << "Property: ";
+        Display();
+    }
+
+
+
     const std::string &getName() const;
 
     Player *getOwner() const;

@@ -48,6 +48,20 @@ void Property::ApplyEffect(Player *player) const {
     std::cout << player->getName() << std::endl;
 }
 
+// Implementare "dummy" pentru funcția Display
+void Property::Display() const {
+    // Acest cod este inutil deoarece clasa Property este abstractă,
+    // dar este necesar pentru vtable.
+    std::cout << "This is a generic property. Should not be directly used.\n";
+}
+
+// Implementare pentru clone
+Property* Property::clone() const {
+    // Aruncă o eroare deoarece nu are sens să clonezi un obiect din clasa abstractă.
+    throw std::runtime_error("Cannot clone an abstract Property object.");
+}
+
+
 int Property::getOwned() const {
     return owned;
 }

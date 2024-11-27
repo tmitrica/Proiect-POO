@@ -1,6 +1,6 @@
 #include "Chance.h"
 
-Chance::Chance(const std::string& name, const int price, const int rent) {
+Chance::Chance(const std::string& name, const int price, const int rent):Property(name, price, rent) {
     this->name = name;
     this->price = price;
     this->rent = rent;
@@ -40,5 +40,17 @@ void Chance::ApplyEffect(Player *player) const {
             else player->move(56 - player->getPosition());
         } else if (action == 9)
             std::cout << player->getName() << " gets nothing from this card \n";
+}
+
+#include "Chance.h"
+
+// Implementarea funcției Display
+void Chance::Display() const {
+    std::cout<< name << "received the bonus from chance\n";
+}
+
+// Implementarea funcției clone
+Property* Chance::clone() const {
+    return new Chance(*this);
 }
 

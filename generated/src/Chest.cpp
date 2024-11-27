@@ -1,6 +1,6 @@
 #include "Chest.h"
 
-Chest::Chest(const std::string& name, const int price, const int rent) {
+Chest::Chest(const std::string& name, const int price, const int rent):Property(name, price, rent) {
     this->name = name;
     this->price = price;
     this->rent = rent;
@@ -37,4 +37,16 @@ void Chest::ApplyEffect(Player *player) const {
         player->buy(1);
     } else if (action == 9)
         std::cout << player->getName() << " gets nothing from this card \n";
+}
+
+#include "Chest.h"
+
+// Implementarea funcției Display
+void Chest::Display() const {
+    std::cout << "Chest: " << name << ", Bonus: " << price << "\n";
+}
+
+// Implementarea funcției clone
+Property* Chest::clone() const {
+    return new Chest(*this);
 }
