@@ -35,5 +35,5 @@ Property &Board::getProperty(const int position) const {
 Board::~Board() {
     for (int i = 0; i < 36; ++i)
         delete properties[i];
-    delete properties;
+    delete[] properties;
 }
