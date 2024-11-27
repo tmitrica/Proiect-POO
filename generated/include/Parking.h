@@ -6,7 +6,7 @@
 
 class Parking : public Property {
 public:
-    Parking(const std::string& name, int price);
+    Parking(const std::string& name, int price, int rent);
 
     void ApplyEffect(Player *player) const override;
 };

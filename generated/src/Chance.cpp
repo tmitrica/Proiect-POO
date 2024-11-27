@@ -1,8 +1,9 @@
 #include "Chance.h"
 
-Chance::Chance(const std::string& name, int price) {
+Chance::Chance(const std::string& name, const int price, const int rent) {
     this->name = name;
     this->price = price;
+    this->rent = rent;
 }
 
 void Chance::ApplyEffect(Player *player) const {

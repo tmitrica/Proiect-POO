@@ -1,7 +1,7 @@
 #include "Board.h"
 
 Board::Board(const std::string &f) {
-    properties = new Property[36];
+    properties = new Property*[36];
     /// we will create a board consisting of 36 properties, which we will read from the file
 
     std::ifstream file(f);
@@ -14,16 +14,22 @@ Board::Board(const std::string &f) {
 
     for (int i = 0; i < 36; ++i) {
         file >> name >> price >> rent;
-        if (price < 10)
-            properties[i] = Property(name, price, rent,2);
+        if (price == 3)
+            properties[i] = new Chest(name, price, rent);
+        else if (price == 4)
+            properties[i] = new Chance(name, price, rent);
+        else if (price == 8)
+            properties[i] = new Parking(name, price, rent);
+        else if (price < 10)
+            properties[i] = new Property(name, price, rent,2);
         else
-            properties[i] = Property(name, price, rent);
+            properties[i] = new Property(name, price, rent);
     }
     file.close();
 }
 
 Property &Board::getProperty(const int position) const {
-    return properties[position];
+    return *properties[position];
 } /// retrieves the current property on which a player has landed
 
 Board::~Board() {

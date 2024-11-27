@@ -1,8 +1,9 @@
 #include "Parking.h"
 
-Parking::Parking(const std::string& name, int price) {
+Parking::Parking(const std::string& name, const int price, const int rent) {
   this->name = name;
   this->price = price;
+    this->rent = rent;
 }
 
 void Parking::ApplyEffect(Player *player) const {

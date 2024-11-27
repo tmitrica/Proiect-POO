@@ -14,3 +14,11 @@
 25	686	7543995815130536	CMakeFiles/oop.dir/generated/src/Chest.cpp.obj	5509d7fce2c458a6
 30	686	7543995815181778	CMakeFiles/oop.dir/generated/src/Parking.cpp.obj	bffbe74e49750922
 686	904	7543995821745671	oop.exe	ddbd4d9e59a961aa
+79	1146	7544076325336295	CMakeFiles/oop.dir/generated/src/Board.cpp.obj	5104e56dac6a1e08
+65	1151	7544076325205713	CMakeFiles/oop.dir/main.cpp.obj	ccd2b443c0595e32
+96	1157	7544076325507119	CMakeFiles/oop.dir/generated/src/Parking.cpp.obj	bffbe74e49750922
+91	1162	7544076325456615	CMakeFiles/oop.dir/generated/src/Chest.cpp.obj	5509d7fce2c458a6
+87	1169	7544076325416504	CMakeFiles/oop.dir/generated/src/Chance.cpp.obj	21f83c9117c84c9b
+74	1170	7544076325293703	CMakeFiles/oop.dir/generated/src/Property.cpp.obj	a4de48d01c5be0a
+83	1173	7544076325376408	CMakeFiles/oop.dir/generated/src/Game.cpp.obj	980edb692fb650d6
+1173	1551	7544076336275940	oop.exe	ddbd4d9e59a961aa

@@ -32,6 +32,6 @@ public:
 
     void setOwner(Player *local_owner);
 
-    ~Property() = default; ///destructor
+    virtual ~Property() = default; ///destructor
 };
 #endif //PROPERTY_H

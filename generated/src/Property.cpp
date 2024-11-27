@@ -45,7 +45,7 @@ void Property::setOwned(const int local_owned) {
 }
 
 void Property::ApplyEffect(Player *player) const {
-    std::cout << this->name << std::endl;
+    std::cout << player->getName() << std::endl;
 }
 
 int Property::getOwned() const {

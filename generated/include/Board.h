@@ -5,9 +5,12 @@
 #include<string>
 #include<fstream>
 #include "Property.h"
+#include "Chest.h"
+#include "Chance.h"
+#include "Parking.h"
 
 class Board {
-    Property *properties;
+    Property **properties;
 
 public:
     explicit Board(const std::string &f);

@@ -1,6 +1,6 @@
 #include "Chest.h"
 
-Chest::Chest(const std::string& name, int price, int rent) {
+Chest::Chest(const std::string& name, const int price, const int rent) {
     this->name = name;
     this->price = price;
     this->rent = rent;
