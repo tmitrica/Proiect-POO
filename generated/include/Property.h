@@ -6,6 +6,7 @@
 #include "Player.h"
 
 class Property {
+protected:
     std::string name;
     int price, rent;
     int owned;
@@ -15,7 +16,9 @@ public:
     explicit Property(const std::string &name = "", int price = 0, int rent = 0, int owned = 0,
                       Player *owner = nullptr);
 
-    int buy(Player *player);
+    virtual int buy(Player *player);
+
+    virtual void ApplyEffect(Player *player) const;
 
     const std::string &getName() const;
 

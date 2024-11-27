@@ -48,6 +48,9 @@ add_executable(${PROJECT_NAME}
         generated/src/Property.cpp
         generated/src/Board.cpp
         generated/src/Game.cpp
+        generated/src/Chance.cpp
+        generated/src/Chest.cpp
+        generated/src/Parking.cpp
 )
 
 include(cmake/CompilerFlags.cmake)
