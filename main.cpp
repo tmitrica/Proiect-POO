@@ -3,6 +3,8 @@
 #include<cstdlib>
 #include<ctime>
 #include<cassert>
+#include <Exception.h>
+
 #include "Game.h"
 
 /*
@@ -26,7 +28,17 @@ int main() {
     srand(static_cast<unsigned int>(time(nullptr))); /// initialize seed for random
 
     /// test the game itself for the functionality of the Turn function and board initialization
-    Game game("players.txt", "board.txt"); /// generate the game using the files
+    try {
+        Game game("players.txt", "board.txt"); /// generate the game using the files
+    } catch (const SpecialPropertyPlacementException &e) {
+        std::cout << e.what() + '\n';
+    }catch (const FileNotFoundException &e) {
+        std::cout << e.what() + '\n';
+    }catch (const PlayerException &e) {
+        std::cout << e.what() + '\n';
+    }
+
+    Game game("players.txt", "board.txt");
     std::cout << '\n';
     game.Turn(0, 1);
 

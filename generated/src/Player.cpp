@@ -86,8 +86,3 @@ int Player::getIn_Game() const {
 void Player::setIn_Game(const int local_in_game) {
     this->in_game = local_in_game;
 }
-
-
-/// getters for name, position, and the variable indicating if the current player is in jail or not
-
-//Player::~Player() = default;/// destructor

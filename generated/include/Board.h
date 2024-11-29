@@ -8,12 +8,16 @@
 #include "Chest.h"
 #include "Chance.h"
 #include "Parking.h"
+#include<vector>
 
 class Board {
-    Property **properties;
+    std::vector<Property *> properties;
+    static int properties_count;
 
 public:
     explicit Board(const std::string &f);
+
+    static int getProperties_count();
 
     Property &getProperty(int position) const;
 

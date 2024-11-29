@@ -1,19 +1,24 @@
 #include "Game.h"
+#include "Exception.h"
 
 Game::Game(const std::string &f, const std::string &g): board(g) {
     std::ifstream file(f);
     if (!file.is_open()) {
-        std::cout << "file error" << f << '\n';
-        exit(2);
+        throw FileNotFoundException("Failed to open file: " + f);
     }
 
     std::string name;
     file >> players_number;
     players = new Player[players_number];
 
-    for (int i = 0; i < players_number; ++i) {
+    for (int i = 0; i < players_number; i++) {
         file >> name;
         players[i] = Player(name);
+
+        if (players[i].getName() != name && players[i].getMoney() != 750 && players[i].getPosition() != 0
+            && players[i].getJail() != 0) {
+            throw PlayerException(players[i].getName());
+        }
     }
     file.close();
 } /// constructor to initialize the board and read players from the file, as well as their count
@@ -77,15 +82,15 @@ int Game::Turn(const int currentPlayer, const int turn) {
 
                 if (const auto *chest = dynamic_cast<Chest *>(&property)) {
                     std::cout << player.getName() << " at position " << player.getPosition() <<
-                                " landed on a community chest\n";
+                            " landed on a community chest\n";
                     chest->ApplyEffect(&player);
                 } else if (const auto *chance = dynamic_cast<Chance *>(&property)) {
                     std::cout << player.getName() << " at position " << player.getPosition() <<
-                                " landed on a chance\n";
+                            " landed on a chance\n";
                     chance->ApplyEffect(&player);
                 } else if (const auto *parking = dynamic_cast<Parking *>(&property)) {
                     std::cout << player.getName() << " at position " << player.getPosition() <<
-                                " landed on the paid parking\n";
+                            " landed on the paid parking\n";
                     parking->ApplyEffect(&player);
                 } else {
                     int landed = property.buy(&player);
