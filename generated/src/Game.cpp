@@ -1,7 +1,20 @@
 #include "Game.h"
 #include "Exception.h"
 
-Game::Game(const std::string &f, const std::string &g): board(g) {
+/**
+ * @file Game.cpp
+ * @brief Implementation of the Game class, which manages the core gameplay logic.
+ */
+
+/**
+ * @brief Constructs a Game object by initializing the board and loading players from a file.
+ *
+ * @param f The filename containing player information.
+ * @param g The filename containing board information.
+ * @throws FileNotFoundException If the file containing player data cannot be opened.
+ * @throws PlayerException If a player's attributes are invalid after initialization.
+ */
+Game::Game(const std::string &f, const std::string &g) : board(g) {
     std::ifstream file(f);
     if (!file.is_open()) {
         throw FileNotFoundException("Failed to open file: " + f);
@@ -21,12 +34,27 @@ Game::Game(const std::string &f, const std::string &g): board(g) {
         }
     }
     file.close();
-} /// constructor to initialize the board and read players from the file, as well as their count
+}
 
+/**
+ * @brief Simulates a player's turn in the game.
+ *
+ * @param currentPlayer The index of the current player in the array.
+ * @param turn The current turn number.
+ * @return An integer indicating the game's state:
+ * - `0` if the game has ended.
+ * - Recursive call to `Turn` to process the next player's turn.
+ *
+ * @details The function handles several scenarios:
+ * - If the current player is inactive, it moves to the next active player.
+ * - Ends the game when only one active player remains or after 250 turns.
+ * - Rolls dice for the player and moves them on the board.
+ * - Applies the effects of the tile they land on (property purchase, rent payment, community chest, etc.).
+ */
 int Game::Turn(const int currentPlayer, const int turn) {
     std::cout << "Turn: " << turn << '\n';
 
-    ///checking if currentPlayer is active
+    // Check if currentPlayer is active
     if (players[currentPlayer].getIn_Game() == 0) {
         int nextPlayer = (currentPlayer + 1) % players_number;
         while (players[nextPlayer].getIn_Game() == 0 && nextPlayer != currentPlayer) {
@@ -37,9 +65,10 @@ int Game::Turn(const int currentPlayer, const int turn) {
             std::cout << "No active players left. The game has ended.\n";
             return 0;
         }
-        return Turn(nextPlayer, turn); ///we continue the turn with the next active player
+        return Turn(nextPlayer, turn); // Continue with the next active player
     }
 
+    // Check for remaining active players
     int activePlayers = 0;
     int lastActivePlayerIndex = -1;
     for (int i = 0; i < players_number; i++) {
@@ -49,11 +78,13 @@ int Game::Turn(const int currentPlayer, const int turn) {
         }
     }
 
+    // End the game if only one player remains
     if (activePlayers == 1) {
         std::cout << "Player " << players[lastActivePlayerIndex].getName() << " has won.\n";
         return 0;
-    } ///the game ends when there is only one active player
+    }
 
+    // End the game after 250 turns
     if (turn == 250) {
         std::cout << "The game ended after 250 turns\n";
 
@@ -67,8 +98,9 @@ int Game::Turn(const int currentPlayer, const int turn) {
         }
         std::cout << winner << " won by having the most amount of money " << max << '\n';
         return 0;
-    } ///the game ends after 250 turns
+    }
 
+    // Process each player's turn
     for (int i = 0; i < players_number; ++i) {
         if (players[i].getIn_Game() == 1) {
             Player &player = players[i];
@@ -80,54 +112,54 @@ int Game::Turn(const int currentPlayer, const int turn) {
 
                 auto &property = const_cast<Property &>(board.getProperty(player.getPosition()));
 
+                // Handle special property types
                 if (const auto *chest = dynamic_cast<Chest *>(&property)) {
-                    std::cout << player.getName() << " at position " << player.getPosition() <<
-                            " landed on a community chest\n";
+                    std::cout << player.getName() << " at position " << player.getPosition()
+                            << " landed on a community chest\n";
                     chest->ApplyEffect(&player);
                 } else if (const auto *chance = dynamic_cast<Chance *>(&property)) {
-                    std::cout << player.getName() << " at position " << player.getPosition() <<
-                            " landed on a chance\n";
+                    std::cout << player.getName() << " at position " << player.getPosition()
+                            << " landed on a chance\n";
                     chance->ApplyEffect(&player);
                 } else if (const auto *parking = dynamic_cast<Parking *>(&property)) {
-                    std::cout << player.getName() << " at position " << player.getPosition() <<
-                            " landed on the paid parking\n";
+                    std::cout << player.getName() << " at position " << player.getPosition()
+                            << " landed on the paid parking\n";
                     parking->ApplyEffect(&player);
                 } else {
+                    // Handle property purchase or rent payment
                     int landed = property.buy(&player);
                     if (landed == 1)
                         std::cout << player.getName() << " at position " << player.getPosition() << " bought property "
-                                <<
-                                property.getName() << '\n';
+                                << property.getName() << '\n';
                     else if (landed == 5)
-                        std::cout << player.getName() << " at position " << player.getPosition() <<
-                                " landed on a train station and got moved to " << player.move_train() << '\n';
+                        std::cout << player.getName() << " at position " << player.getPosition()
+                                << " landed on a train station and got moved to " << player.move_train() << '\n';
                     else if (landed == 2)
-                        std::cout << player.getName() << " at position " << player.getPosition() <<
-                                " landed on a neutral space\n";
+                        std::cout << player.getName() << " at position " << player.getPosition()
+                                << " landed on a neutral space\n";
                     else if (landed == 6) {
                         std::cout << player.getName() << " must go to jail for 3 rounds\n";
                         player.move_jail();
                     } else if (landed == 7)
-                        std::cout << player.getName() << " at position " << player.getPosition() <<
-                                " insufficient funds for this property\n";
+                        std::cout << player.getName() << " at position " << player.getPosition()
+                                << " insufficient funds for this property\n";
                     else {
                         Player *owner = property.getOwner();
-
                         const int rent = property.getRent();
 
                         if (owner == &player) {
-                            std::cout << player.getName() << " at position " << player.getPosition() <<
-                                    " owns this property\n";
+                            std::cout << player.getName() << " at position " << player.getPosition()
+                                    << " owns this property\n";
                         } else if (player.getMoney() >= rent && player.getName() != owner->getName()) {
-                            std::cout << player.getName() << " at position " << player.getPosition() << " paid rent " <<
-                                    rent << " to " << owner->getName() << '\n';
+                            std::cout << player.getName() << " at position " << player.getPosition()
+                                    << " paid rent " << rent << " to " << owner->getName() << '\n';
                             owner->ReceiveRent(rent);
                             player.PayRent(rent);
                         } else if (player.getMoney() < rent && player.getName() != owner->getName()) {
-                            std::cout << player.getName() << " at position " << player.getPosition() <<
-                                    " can't pay rent "
-                                    << rent << " to " << owner->getName() << '\n';
+                            std::cout << player.getName() << " at position " << player.getPosition()
+                                    << " can't pay rent " << rent << " to " << owner->getName() << '\n';
 
+                            // Handle player bankruptcy
                             for (int j = 0; j < 36; j++) {
                                 auto &property1 = const_cast<Property &>(board.getProperty(j));
                                 if (property1.getOwned() == 1 && property1.getOwner()->getName() == players[i].
@@ -148,7 +180,7 @@ int Game::Turn(const int currentPlayer, const int turn) {
         }
     }
 
-    ///checking for next active player
+    // Check for next active player
     int nextPlayer = (currentPlayer + 1) % players_number;
     while (players[nextPlayer].getIn_Game() == 0 && nextPlayer != currentPlayer) {
         nextPlayer = (nextPlayer + 1) % players_number;
@@ -162,11 +194,9 @@ int Game::Turn(const int currentPlayer, const int turn) {
     return Turn(nextPlayer, turn + 1);
 }
 
-/// this function simulates a player's turn in the game; first, we check if the current player is in jail
-/// if they are in jail, we update the remaining number of turns until they can play again
-/// if not, we roll the dice using the random function, then move the player accordingly; we check the tile the player landed on
-/// apply the tile's effects on the player and display what happened at the end of the turn
-
+/**
+ * @brief Destructor for the Game class. Cleans up dynamically allocated player data.
+ */
 Game::~Game() {
     delete[] players;
-} /// destructor
+}

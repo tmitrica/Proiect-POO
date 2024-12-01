@@ -1,11 +1,31 @@
 #include "Board.h"
 #include "Exception.h"
 
+/**
+ * @file Board.cpp
+ * @brief Implementation of the Board class, representing the game board.
+ */
+
+/**
+ * @brief Static member initialization for the property count on the board.
+ */
 int Board::properties_count = 0;
 
+/**
+ * @brief Constructs the Board object by reading properties from a file.
+ *
+ * @param f The filename containing the board properties.
+ * @throws FileNotFoundException If the file cannot be opened.
+ * @throws SpecialPropertyPlacementException If special properties are incorrectly positioned.
+ * @throws BaseException If the total number of properties is not equal to 36.
+ *
+ * @details The board consists of 36 properties read from the file. Each property is either:
+ * - A regular property
+ * - A special property (Chest, Chance, Parking, etc.)
+ * The constructor enforces specific positions for special properties.
+ */
 Board::Board(const std::string &f) {
     properties.reserve(36);
-    /// we will create a board consisting of 36 properties, which we will read from the file
 
     std::ifstream file(f);
     if (!file.is_open()) {
@@ -37,24 +57,25 @@ Board::Board(const std::string &f) {
             }
             properties.push_back(new Parking(name, price, rent));
         } else if (price == 2) {
-            //start jail
+            // Start or Jail
             if (i != 0 && i != 9) {
                 throw SpecialPropertyPlacementException(i, name);
             }
             properties.push_back(new Property(name, price, rent, 2));
         } else if (price == 5) {
-            //stations
+            // Stations
             if (i != 4 && i != 12 && i != 24 && i != 32) {
                 throw SpecialPropertyPlacementException(i, name);
             }
             properties.push_back(new Property(name, price, rent, 2));
         } else if (price == 6) {
-            //go_to_jail
+            // Go to Jail
             if (i != 27) {
                 throw SpecialPropertyPlacementException(i, name);
             }
             properties.push_back(new Property(name, price, rent, 2));
         } else {
+            // Regular property
             properties.push_back(new Property(name, price, rent));
         }
 
@@ -68,14 +89,30 @@ Board::Board(const std::string &f) {
     }
 }
 
+/**
+ * @brief Retrieves the total number of properties on the board.
+ *
+ * @return The number of properties on the board.
+ */
 int Board::getProperties_count() {
     return properties_count;
 }
 
+/**
+ * @brief Retrieves a reference to the property at the specified position.
+ *
+ * @param position The position of the property on the board (0-35).
+ * @return A reference to the `Property` object at the specified position.
+ */
 Property &Board::getProperty(const int position) const {
     return *properties[position];
-} /// retrieves the current property on which a player has landed
+}
 
+/**
+ * @brief Destructor for the Board class. Frees allocated memory for properties.
+ *
+ * @details Iterates through all properties, deletes each one, and decrements the property count.
+ */
 Board::~Board() {
     for (const auto &property: properties) {
         properties_count--;
