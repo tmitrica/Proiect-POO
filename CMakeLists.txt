@@ -51,6 +51,7 @@ add_executable(${PROJECT_NAME}
         generated/src/Chance.cpp
         generated/src/Chest.cpp
         generated/src/Parking.cpp
+        generated/src/Exception.cpp
 )
 
 include(cmake/CompilerFlags.cmake)
