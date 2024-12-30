@@ -11,6 +11,7 @@ class Game {
     Player *players;
     int players_number = 0;
     Board board;
+    GameLogger logger;
 
 public:
 

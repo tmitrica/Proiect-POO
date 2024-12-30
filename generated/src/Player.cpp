@@ -31,10 +31,7 @@ Player::Player(const std::string &name, const int money, const int position, con
  */
 void Player::move(const int pos) {
     if (position + pos >= 36) {
-        std::cout << name << " collected 200$ by going over START\n";
-        if (money + 200 > 3000)
-            money = 3000;
-        else money += 200;
+        money = std::min(money + 200, 3000);
     }
 
     position = (position + pos) % 36;
@@ -47,19 +44,24 @@ void Player::move(const int pos) {
  *
  * @return The new position of the player.
  */
-int Player::move_train() {
-    if (position == 4) position = 12;
-    else if (position == 12) position = 24;
-    else if (position == 24) position = 32;
+void Player::move_train() {
+    if (position == 4) {
+        position = 12;
+        std::cout << name << " new position: " << position << '\n';
+    } else if (position == 12) {
+        position = 24;
+        std::cout << name << " new position: " << position << '\n';
+    } else if (position == 24) {
+        position = 32;
+        std::cout << name << " new position: " << position << '\n';
+    }
     else if (position == 32) {
         position = 4;
-        if (money + 200 > 3000)
-            money = 3000;
-        else money += 200;
-        std::cout << "(collected 200$ from START)\n";
+        money = std::min(money + 200, 3000);
+        std::cout<< name << " new position: " << position << '\n';
     }
-    return position;
 }
+
 
 /**
  * @brief Moves the player to jail and manages their jail status.
@@ -70,10 +72,9 @@ void Player::move_jail() {
     if (jail < 2) {
         position = 9;
         jail++;
-        std::cout << name << " is in jail and cannot throw the dice\n";
+        std::cout << name << " still in jail" << "\n";
     } else if (jail == 2) {
         jail = 0;
-        std::cout << name << " can throw the dice again next round\n";
     }
 }
 
@@ -86,12 +87,12 @@ void Player::move_jail() {
  * - `0` if the player does not have enough money.
  */
 int Player::buy(const int price) {
-    if (price == 0) return 0;
-
     if (money >= price) {
         money -= price;
         return 1;
-    } else return 0;
+    } else {
+        return 0;
+    }
 }
 
 /**
@@ -138,9 +139,7 @@ int Player::getJail() const {
  * @param local_money The amount of money to add.
  */
 void Player::ReceiveRent(const int local_money) {
-    if (this->money + local_money > 3000)
-        this->money = 3000;
-    else this->money += local_money;
+    money = std::min(money + local_money, 3000);
 }
 
 /**
@@ -149,7 +148,7 @@ void Player::ReceiveRent(const int local_money) {
  * @param local_money The amount of money to deduct.
  */
 void Player::PayRent(const int local_money) {
-    this->money = this->money - local_money;
+    money -= local_money;
 }
 
 /**
@@ -167,5 +166,14 @@ int Player::getIn_Game() const {
  * @param local_in_game The new game status (`1` for active, `0` for eliminated).
  */
 void Player::setIn_Game(const int local_in_game) {
-    this->in_game = local_in_game;
+    in_game = local_in_game;
+}
+
+/**
+ * @brief Adds an observer to the player's list of observers.
+ *
+ * @param observer The observer to be added.
+ */
+void Player::addObserver(Observer *observer) {
+    observers.push_back(observer);
 }

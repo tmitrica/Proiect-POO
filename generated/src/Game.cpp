@@ -32,7 +32,10 @@ Game::Game(const std::string &f, const std::string &g) : board(g) {
             && players[i].getJail() != 0) {
             throw PlayerException(players[i].getName());
         }
+
+        players[i].addObserver(&logger);
     }
+
     file.close();
 }
 
@@ -42,8 +45,8 @@ Game::Game(const std::string &f, const std::string &g) : board(g) {
  * @param currentPlayer The index of the current player in the array.
  * @param turn The current turn number.
  * @return An integer indicating the game's state:
- * - `0` if the game has ended.
- * - Recursive call to `Turn` to process the next player's turn.
+ * - 0 if the game has ended.
+ * - Recursive call to Turn to process the next player's turn.
  *
  * @details The function handles several scenarios:
  * - If the current player is inactive, it moves to the next active player.
@@ -114,62 +117,53 @@ int Game::Turn(const int currentPlayer, const int turn) {
 
                 // Handle special property types
                 if (const auto *chest = dynamic_cast<Chest *>(&property)) {
-                    std::cout << player.getName() << " at position " << player.getPosition()
-                            << " landed on a community chest\n";
+                    logger.update(player.getName() + " at position " + std::to_string(player.getPosition()) + " landed on a community chest");
                     chest->ApplyEffect(&player);
                 } else if (const auto *chance = dynamic_cast<Chance *>(&property)) {
-                    std::cout << player.getName() << " at position " << player.getPosition()
-                            << " landed on a chance\n";
+                    logger.update(player.getName() + " at position " + std::to_string(player.getPosition()) + " landed on a chance");
                     chance->ApplyEffect(&player);
                 } else if (const auto *parking = dynamic_cast<Parking *>(&property)) {
-                    std::cout << player.getName() << " at position " << player.getPosition()
-                            << " landed on the paid parking\n";
+                    logger.update(player.getName() + " at position " + std::to_string(player.getPosition()) + " landed on the paid parking");
                     parking->ApplyEffect(&player);
                 } else {
                     // Handle property purchase or rent payment
                     int landed = property.buy(&player);
                     if (landed == 1)
-                        std::cout << player.getName() << " at position " << player.getPosition() << " bought property "
-                                << property.getName() << '\n';
-                    else if (landed == 5)
-                        std::cout << player.getName() << " at position " << player.getPosition()
-                                << " landed on a train station and got moved to " << player.move_train() << '\n';
+                        logger.update(player.getName() + " at position " + std::to_string(player.getPosition()) + " bought property " + property.getName());
+                    else if (landed == 5) {
+                        logger.update(player.getName() + " at position " + std::to_string(player.getPosition()) + " landed on a train station");
+                        player.move_train();
+                    }
                     else if (landed == 2)
-                        std::cout << player.getName() << " at position " << player.getPosition()
-                                << " landed on a neutral space\n";
+                        logger.update(player.getName() + " at position " + std::to_string(player.getPosition()) + " landed on a neutral space");
                     else if (landed == 6) {
-                        std::cout << player.getName() << " must go to jail for 3 rounds\n";
+                        logger.update(player.getName() + " must go to jail for 3 rounds");
                         player.move_jail();
                     } else if (landed == 7)
-                        std::cout << player.getName() << " at position " << player.getPosition()
-                                << " insufficient funds for this property\n";
+                        logger.update(player.getName() + " at position " + std::to_string(player.getPosition()) + " insufficient funds for this property");
                     else {
                         Player *owner = property.getOwner();
                         const int rent = property.getRent();
 
                         if (owner == &player) {
-                            std::cout << player.getName() << " at position " << player.getPosition()
-                                    << " owns this property\n";
+                            logger.update(player.getName() + " at position " + std::to_string(player.getPosition()) + " owns this property");
                         } else if (player.getMoney() >= rent && player.getName() != owner->getName()) {
-                            std::cout << player.getName() << " at position " << player.getPosition()
-                                    << " paid rent " << rent << " to " << owner->getName() << '\n';
+                            logger.update(player.getName() + " at position " + std::to_string(player.getPosition()) + " paid rent " + std::to_string(rent) + " to " + owner->getName());
                             owner->ReceiveRent(rent);
                             player.PayRent(rent);
                         } else if (player.getMoney() < rent && player.getName() != owner->getName()) {
-                            std::cout << player.getName() << " at position " << player.getPosition()
-                                    << " can't pay rent " << rent << " to " << owner->getName() << '\n';
+                            logger.update(player.getName() + " at position " + std::to_string(player.getPosition()) + " can't pay rent " + std::to_string(rent) + " to " + owner->getName());
 
                             // Handle player bankruptcy
                             for (int j = 0; j < 36; j++) {
                                 auto &property1 = const_cast<Property &>(board.getProperty(j));
-                                if (property1.getOwned() == 1 && property1.getOwner()->getName() == players[i].
-                                    getName()) {
+                                if (property1.getOwned() == 1 && property1.getOwner()->getName() == players[i].getName()) {
                                     property1.setOwned(0);
                                     property1.setOwner(nullptr);
                                 }
                             }
 
-                            std::cout << players[i].getName() << " has lost\n";
+                            logger.update(players[i].getName() + " has lost");
                             players[i].setIn_Game(0);
                         }
                     }
@@ -193,6 +187,7 @@ int Game::Turn(const int currentPlayer, const int turn) {
 
     return Turn(nextPlayer, turn + 1);
 }
+
 
 /**
  * @brief Destructor for the Game class. Cleans up dynamically allocated player data.

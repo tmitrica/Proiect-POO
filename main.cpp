@@ -20,7 +20,7 @@
  * - **Stations:** Move the player to the next station (positions 4, 12, 24, and 32).
  * - **Chance:** Applies an effect (positive or negative) to the player.
  * - **Chest:** Modifies the player's balance (positive or negative).
- * - **Parking and Jail (visiting):** Neutral tiles.
+ * - **Jail (visiting):** Neutral tile.
  * - **Go to Jail:** Sends the player to Jail (position 9), where they skip 3 turns.
  *
  * **Input Files:**

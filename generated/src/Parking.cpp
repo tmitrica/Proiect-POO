@@ -27,4 +27,5 @@ Parking::Parking(const std::string &name, const int price, const int rent) : Pro
  */
 void Parking::ApplyEffect(Player *player) const {
     player->buy(300);
+    std::cout<<player->getName()<<" paid 300 for parking"<<"\n";
 }
