@@ -53,6 +53,7 @@ add_executable(${PROJECT_NAME}
         generated/src/Parking.cpp
         generated/src/Exception.cpp
         generated/src/GameLogger.cpp
+        generated/src/PropertyFactory.cpp
 )
 
 include(cmake/CompilerFlags.cmake)
