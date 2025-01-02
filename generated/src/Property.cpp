@@ -49,7 +49,7 @@ int Property::buy(Player *player) {
     else if (price == 2)
         return 2; /// visiting jail; start
     else if (price == 8)
-        return 8; /// paid_parking;
+        return 8; /// paid_parking
     else if (price == 6)
         return 6; /// go_to_jail
     if (owned == 0 && player->buy(price)) {
