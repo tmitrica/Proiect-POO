@@ -1,4 +1,9 @@
 #include "Game.h"
+
+#include <Chance.h>
+#include <Chest.h>
+#include <Parking.h>
+
 #include "Exception.h"
 
 /**

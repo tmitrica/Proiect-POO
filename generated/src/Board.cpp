@@ -1,31 +1,19 @@
-/**
- * @file Board.cpp
- * @brief Implementation of the Board class, representing the game board.
- *
- * This file implements the methods for managing properties on the board. It reads property data from a file,
- * creates properties using the `PropertyFactory`, and provides access to the properties by position.
- *
- * @see Board
- * @see PropertyFactory
- */
 #include "Board.h"
 #include "PropertyFactory.h"
 #include "Exception.h"
 
-int Board::properties_count = 0;
-
 /**
  * @brief Constructs the board by reading property data from a file.
  *
- * This constructor reads property data from a file and uses the `PropertyFactory` to create the properties.
- * It ensures that special properties are placed in the correct positions, throwing exceptions if any errors
- * occur during the creation of properties.
+ * This constructor reads data from a file and creates properties using `PropertyFactory`.
+ * Special properties are validated and placed in specific positions.
  *
  * @param f The filename containing property data.
  * @throws FileNotFoundException If the file cannot be opened.
  * @throws SpecialPropertyPlacementException If a special property is placed incorrectly.
- * @throws BaseException If the number of properties is not equal to 36.
+ * @throws BaseException If the total number of properties is incorrect.
  */
+int Board::properties_count = 0;
 Board::Board(const std::string &f) {
     properties.reserve(36);
 
@@ -40,12 +28,15 @@ Board::Board(const std::string &f) {
     for (int i = 0; i < 36; ++i) {
         file >> name >> price >> rent;
 
-        // Use PropertyFactory to create the property
         try {
-            properties.push_back(PropertyFactory::createProperty(name, price, rent, i));
+            if (price == 3 || price == 4 || price == 8 || price == 2 || price == 5 || price == 6) {
+                properties.push_back(PropertyFactory::createSpecialProperty(name, price, rent, i));
+            } else {
+                properties.push_back(PropertyFactory::createProperty(name, price, rent));
+            }
         } catch (const SpecialPropertyPlacementException& e) {
             std::cerr << "Error: " << e.what() << std::endl;
-            continue;  // Continue processing other properties even if one is invalid
+            continue;
         }
 
         properties_count++;
@@ -59,33 +50,31 @@ Board::Board(const std::string &f) {
 }
 
 /**
- * @brief Returns the total number of properties on the board.
+ * @brief Retrieves the total number of properties on the board.
  *
- * @return The number of properties on the board (36).
+ * @return The number of properties on the board.
  */
 int Board::getProperties_count() {
     return properties_count;
 }
 
 /**
- * @brief Retrieves a reference to the property at the specified position.
+ * @brief Retrieves a reference to the property at a specified position.
  *
- * This method returns a reference to the `Property` object at the given position on the board.
- *
- * @param position The position of the property (0-35).
- * @return A reference to the `Property` at the given position.
+ * @param position The position of the property.
+ * @return A reference to the `Property` object.
  */
-Property &Board::getProperty(const int position) const {
+Property& Board::getProperty(const int position) const {
     return *properties[position];
 }
 
 /**
  * @brief Destructor for the Board class.
  *
- * This destructor deletes all dynamically allocated properties from memory.
+ * Frees memory allocated for all properties on the board.
  */
 Board::~Board() {
-    for (auto &property : properties) {
+    for (const auto& property : properties) {
         properties_count--;
         delete property;
     }

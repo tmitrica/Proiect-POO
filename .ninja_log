@@ -1,9 +1,9 @@
 # ninja log v6
 5	960	7572583777005116	CMakeFiles/oop.dir/main.cpp.obj	ccd2b443c0595e32
-1175	1322	7572583788698636	oop.exe	6c0428033b5e9c7d
+795	987	7572598529082176	oop.exe	6430c00fa287ebaa
 5	915	7572594309684519	CMakeFiles/oop.dir/generated/src/Board.cpp.obj	5104e56dac6a1e08
 9	949	7572583777046147	CMakeFiles/oop.dir/generated/src/Player.cpp.obj	daeb5671912380
-1	542	7572594524837235	build.ninja	675262c661ed4407
+2	393	7575296824887853	build.ninja	675262c661ed4407
 13	890	7572583777079499	CMakeFiles/oop.dir/generated/src/Property.cpp.obj	a4de48d01c5be0a
 25	410	7572567369685638	CMakeFiles/oop.dir/generated/src/GameLogger.cpp.obj	30401e5c1e958823
 20	1175	7572583777150274	CMakeFiles/oop.dir/generated/src/Game.cpp.obj	980edb692fb650d6
@@ -12,8 +12,13 @@
 27	917	7572583777220050	CMakeFiles/oop.dir/generated/src/Chest.cpp.obj	5509d7fce2c458a6
 4	15	7544099388156187	clean	d0bcdd894b9b235e
 89	953	7549085606612633	CMakeFiles/oop.dir/generated/src/Exception.cpp.obj	6bca0856a598517d
-2	393	7572594524837235	build.ninja	675262c661ed4407
-30	700	7572594526593791	CMakeFiles/oop.dir/generated/src/PropertyFactory.cpp.obj	d989bb7816b2cfe2
-6	939	7572597114987695	CMakeFiles/oop.dir/generated/src/PropertyFactory.cpp.obj	d989bb7816b2cfe2
 4	794	7572598521182676	CMakeFiles/oop.dir/generated/src/PropertyFactory.cpp.obj	d989bb7816b2cfe2
-795	987	7572598529082176	oop.exe	6430c00fa287ebaa
+72	1303	7575315413202962	CMakeFiles/oop.dir/main.cpp.obj	ccd2b443c0595e32
+85	1327	7575315413336407	CMakeFiles/oop.dir/generated/src/PropertyFactory.cpp.obj	d989bb7816b2cfe2
+78	1344	7575315413271892	CMakeFiles/oop.dir/generated/src/Board.cpp.obj	5104e56dac6a1e08
+82	1362	7575315413307238	CMakeFiles/oop.dir/generated/src/Game.cpp.obj	980edb692fb650d6
+17	1161	7575336150664209	CMakeFiles/oop.dir/generated/src/PropertyFactory.cpp.obj	d989bb7816b2cfe2
+5	1228	7575336150539688	CMakeFiles/oop.dir/generated/src/Board.cpp.obj	5104e56dac6a1e08
+13	1335	7575336150621283	CMakeFiles/oop.dir/generated/src/Game.cpp.obj	980edb692fb650d6
+4	888	7575339640142412	CMakeFiles/oop.dir/generated/src/Board.cpp.obj	5104e56dac6a1e08
+889	1073	7575339648988734	oop.exe	6430c00fa287ebaa
