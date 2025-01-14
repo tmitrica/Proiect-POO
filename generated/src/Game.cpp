@@ -121,11 +121,11 @@ int Game::Turn(const int currentPlayer, const int turn) {
                 auto &property = const_cast<Property &>(board.getProperty(player.getPosition()));
 
                 // Handle special property types
-                if (const auto *chest = dynamic_cast<Chest *>(&property)) {
+                if (dynamic_cast<Chest *>(&property)) {
                     processSpecialProperty<Chest>(property, player, logger, "community chest");
-                } else if (const auto *chance = dynamic_cast<Chance *>(&property)) {
+                } else if (dynamic_cast<Chance *>(&property)) {
                     processSpecialProperty<Chance>(property, player, logger, "chance");
-                } else if (const auto *parking = dynamic_cast<Parking *>(&property)) {
+                } else if (dynamic_cast<Parking *>(&property)) {
                     processSpecialProperty<Parking>(property, player, logger, "paid parking");
                 } else {
                     // Handle property purchase or rent payment
