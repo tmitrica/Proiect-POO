@@ -122,14 +122,11 @@ int Game::Turn(const int currentPlayer, const int turn) {
 
                 // Handle special property types
                 if (const auto *chest = dynamic_cast<Chest *>(&property)) {
-                    logger.update(player.getName() + " at position " + std::to_string(player.getPosition()) + " landed on a community chest");
-                    chest->ApplyEffect(&player);
+                    processSpecialProperty<Chest>(property, player, logger, "community chest");
                 } else if (const auto *chance = dynamic_cast<Chance *>(&property)) {
-                    logger.update(player.getName() + " at position " + std::to_string(player.getPosition()) + " landed on a chance");
-                    chance->ApplyEffect(&player);
+                    processSpecialProperty<Chance>(property, player, logger, "chance");
                 } else if (const auto *parking = dynamic_cast<Parking *>(&property)) {
-                    logger.update(player.getName() + " at position " + std::to_string(player.getPosition()) + " landed on the paid parking");
-                    parking->ApplyEffect(&player);
+                    processSpecialProperty<Parking>(property, player, logger, "paid parking");
                 } else {
                     // Handle property purchase or rent payment
                     int landed = property.buy(&player);

@@ -23,6 +23,16 @@ public:
 
     int Turn(int currentPlayer, int turn);
 
+    template <typename T>
+    void processSpecialProperty(Property &property, Player &player, GameLogger &logger, const std::string &propertyType) {
+        if (auto *specialProperty = dynamic_cast<T *>(&property)) {
+            logger.update(player.getName() + " at position " + std::to_string(player.getPosition()) +
+                          " landed on a " + propertyType);
+            specialProperty->ApplyEffect(&player);
+        }
+    }
+
+
   //  virtual void ApplyEffect();
 
     ~Game();
